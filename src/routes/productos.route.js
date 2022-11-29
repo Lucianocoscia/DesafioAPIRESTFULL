@@ -51,7 +51,7 @@ router
     const newProduct = {
       id: newProductId,
       title,
-      price,
+      price: Number(price),
       thumbnail,
     };
 
@@ -82,15 +82,20 @@ router
   .put((req, res) => {
     const { id } = req.params;
     const { title, price, thumbnail } = req.body;
-    const indexProductToUpdate = products.find(
+    const indexProductToUpdate = products.findIndex(
       (product) => product.id === Number(id)
     );
 
-    if (!indexProductToUpdate) {
+    if (indexProductToUpdate === -1) {
       return res.status(404).json({ status: "Not Found", data: null });
     }
 
-    products.splice(indexProductToUpdate, 1, { id, title, price, thumbnail });
+    products.splice(indexProductToUpdate, 1, {
+      id: Number(id),
+      title,
+      price,
+      thumbnail,
+    });
 
     res.status(200).json({
       status: "Updated",
